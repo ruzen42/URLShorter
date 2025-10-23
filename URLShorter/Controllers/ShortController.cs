@@ -5,7 +5,7 @@ namespace URLShorter.Controllers;
 
 [ApiController]
 [Route("/")]
-public class ShortenerController(IUrlShortenerService shortener) : ControllerBase
+public class ShortenerController(IUrlShortenerService shortener, ILogger<ShortenerController> logger) : ControllerBase
 {
     [HttpPost("shorten")]
     public IActionResult Shorten([FromBody] UrlRequest request)
@@ -14,6 +14,7 @@ public class ShortenerController(IUrlShortenerService shortener) : ControllerBas
             return BadRequest("URL is required.");
 
         var shortUrl = shortener.Shorten(request.Url);
+        logger.LogDebug("Shortened URL: {ShortUrl}", shortUrl);
         return Ok(new { shortUrl });
     }
 
@@ -22,8 +23,12 @@ public class ShortenerController(IUrlShortenerService shortener) : ControllerBas
     {
         var url = shortener.GetOriginal(code);
         if (url is null)
+        {
+            logger.LogDebug("Shortened URL not found: {ShortUrl}", code); 
             return NotFound("Short link not found.");
+        }
 
+        logger.LogInformation("Shortened URL get: {ShortUrl}", code); 
         return Redirect(url);
     }
 
