@@ -7,7 +7,7 @@ namespace URLShorter.Services;
 public class InMemoryUrlShortenerService : IUrlShortenerService
 {
     private readonly ConcurrentDictionary<string, string> _urlMap = new();
-    private const string BaseUrl = "https://localhost:5278/";
+    private const string BaseUrl = "http://localhost:5278/";
 
     public string Shorten(string originalUrl)
     {
