@@ -24,11 +24,11 @@ public class ShortenerController(IUrlShortenerService shortener, ILogger<Shorten
         var url = shortener.GetOriginal(code);
         if (url is null)
         {
-            logger.LogDebug("Shortened URL not found: {ShortUrl}", code); 
+            logger.LogDebug("Shortened URL not found: {ShortUrl}", code);
             return NotFound("Short link not found.");
         }
 
-        logger.LogInformation("Shortened URL get: {ShortUrl}", code); 
+        logger.LogInformation("Shortened URL get: {ShortUrl}", code);
         return Redirect(url);
     }
 
